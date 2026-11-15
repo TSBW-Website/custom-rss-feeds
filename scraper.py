@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from feedgen.feed import FeedGenerator
+from datetime import datetime, timezone
+import re
 
 URL = "https://www.bbc.co.uk/sounds/brand/p0kfv035"
 PROGRAMMES_URL = "https://www.bbc.co.uk/programmes/p0kfv035/episodes/player"
@@ -16,16 +18,42 @@ def extract_image_url(item):
     if not img_el:
         return ""
     
-    # BBC uses data-src or src, and sometimes puts a {recipe} placeholder in the URL
     img_url = img_el.get("data-src") or img_el.get("src") or ""
     if "{recipe}" in img_url:
         img_url = img_url.replace("{recipe}", "640x360")
     
-    # Ignore tiny 1x1 tracking/placeholder pixels
     if img_url.startswith("data:image"):
         return ""
         
     return img_url
+
+def extract_pub_date(item):
+    # 1. Check for a standard HTML <time datetime="..."> attribute
+    time_el = item.select_one("time[datetime]")
+    if time_el and time_el.get("datetime"):
+        dt_str = time_el["datetime"].strip()
+        try:
+            # Handle trailing 'Z' for Python ISO parsing
+            dt = datetime.fromisoformat(dt_str.replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt
+        except ValueError:
+            pass
+
+    # 2. Fallback: Parse visible BBC broadcast date text (e.g., "14 Nov 2026")
+    date_el = item.select_one(".broadcast-event__time, .programme__service, .date, time")
+    if date_el:
+        text = date_el.get_text(" ", strip=True)
+        match = re.search(r'(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})', text)
+        if match:
+            for fmt in ("%d %b %Y", "%d %B %Y"):
+                try:
+                    return datetime.strptime(match.group(1), fmt).replace(tzinfo=timezone.utc)
+                except ValueError:
+                    continue
+
+    return None
 
 def scrape_bbc_sounds():
     print(f"Fetching {PROGRAMMES_URL}...")
@@ -55,6 +83,7 @@ def scrape_bbc_sounds():
         synopsis_el = item.select_one(".programme__synopsis, p")
         synopsis = synopsis_el.get_text(" ", strip=True) if synopsis_el else ""
         image_url = extract_image_url(item)
+        pub_date = extract_pub_date(item)
 
         seen_ids.add(pid)
         episodes.append({
@@ -62,7 +91,8 @@ def scrape_bbc_sounds():
             "title": title,
             "link": f"https://www.bbc.co.uk/sounds/play/{pid}",
             "synopsis": synopsis,
-            "image": image_url
+            "image": image_url,
+            "pub_date": pub_date
         })
 
     for ep in episodes[:20]:
@@ -71,7 +101,9 @@ def scrape_bbc_sounds():
         fe.title(ep["title"])
         fe.link(href=ep["link"])
 
-        # Attach image as a standard RSS media enclosure
+        if ep["pub_date"]:
+            fe.pubDate(ep["pub_date"])
+
         if ep["image"]:
             fe.enclosure(url=ep["image"], length="0", type="image/jpeg")
             desc_html = f'<p><img src="{ep["image"]}" alt="{ep["title"]}" /></p><p>{ep["synopsis"]}</p>'
