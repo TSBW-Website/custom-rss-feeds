@@ -11,6 +11,22 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
+def extract_image_url(item):
+    img_el = item.select_one("img")
+    if not img_el:
+        return ""
+    
+    # BBC uses data-src or src, and sometimes puts a {recipe} placeholder in the URL
+    img_url = img_el.get("data-src") or img_el.get("src") or ""
+    if "{recipe}" in img_url:
+        img_url = img_url.replace("{recipe}", "640x360")
+    
+    # Ignore tiny 1x1 tracking/placeholder pixels
+    if img_url.startswith("data:image"):
+        return ""
+        
+    return img_url
+
 def scrape_bbc_sounds():
     print(f"Fetching {PROGRAMMES_URL}...")
     response = requests.get(PROGRAMMES_URL, headers=HEADERS, timeout=15)
@@ -26,7 +42,6 @@ def scrape_bbc_sounds():
     episodes = []
     seen_ids = set()
 
-    # Extract episode blocks from the BBC programmes player page
     for item in soup.select("[data-pid]"):
         pid = item.get("data-pid")
         if not pid or pid in seen_ids or pid == "p0kfv035":
@@ -39,13 +54,15 @@ def scrape_bbc_sounds():
         title = title_el.get_text(" ", strip=True)
         synopsis_el = item.select_one(".programme__synopsis, p")
         synopsis = synopsis_el.get_text(" ", strip=True) if synopsis_el else ""
+        image_url = extract_image_url(item)
 
         seen_ids.add(pid)
         episodes.append({
             "id": pid,
             "title": title,
             "link": f"https://www.bbc.co.uk/sounds/play/{pid}",
-            "synopsis": synopsis
+            "synopsis": synopsis,
+            "image": image_url
         })
 
     for ep in episodes[:20]:
@@ -53,8 +70,16 @@ def scrape_bbc_sounds():
         fe.id(ep["link"])
         fe.title(ep["title"])
         fe.link(href=ep["link"])
-        if ep["synopsis"]:
-            fe.description(ep["synopsis"])
+
+        # Attach image as a standard RSS media enclosure
+        if ep["image"]:
+            fe.enclosure(url=ep["image"], length="0", type="image/jpeg")
+            desc_html = f'<p><img src="{ep["image"]}" alt="{ep["title"]}" /></p><p>{ep["synopsis"]}</p>'
+        else:
+            desc_html = ep["synopsis"]
+
+        if desc_html:
+            fe.description(desc_html)
 
     fg.rss_file(FILENAME, pretty=True)
     print(f"Saved '{FILENAME}' with {len(episodes[:20])} episodes.")
