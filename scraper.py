@@ -1,8 +1,12 @@
+import json
+import re
+import os
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 import requests
 from bs4 import BeautifulSoup
 from feedgen.feed import FeedGenerator
-from datetime import datetime, timezone
-import re
 
 URL = "https://www.bbc.co.uk/sounds/brand/p0kfv035"
 PROGRAMMES_URL = "https://www.bbc.co.uk/programmes/p0kfv035/episodes/player"
@@ -13,53 +17,78 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
+def load_cached_dates(filename):
+    """Read previously scraped pubDates from the existing XML file so we don't re-fetch old episodes."""
+    cache = {}
+    if not os.path.exists(filename):
+        return cache
+    try:
+        tree = ET.parse(filename)
+        for item in tree.findall(".//item"):
+            link_el = item.find("link")
+            pub_el = item.find("pubDate")
+            if link_el is not None and pub_el is not None and link_el.text and pub_el.text:
+                cache[link_el.text.strip()] = parsedate_to_datetime(pub_el.text.strip())
+    except Exception:
+        pass
+    return cache
+
 def extract_image_url(item):
     img_el = item.select_one("img")
     if not img_el:
         return ""
-    
     img_url = img_el.get("data-src") or img_el.get("src") or ""
     if "{recipe}" in img_url:
         img_url = img_url.replace("{recipe}", "640x360")
-    
     if img_url.startswith("data:image"):
         return ""
-        
     return img_url
 
-def extract_pub_date(item):
-    # 1. Check for a standard HTML <time datetime="..."> attribute
-    time_el = item.select_one("time[datetime]")
-    if time_el and time_el.get("datetime"):
-        dt_str = time_el["datetime"].strip()
-        try:
-            # Handle trailing 'Z' for Python ISO parsing
-            dt = datetime.fromisoformat(dt_str.replace("Z", "+00:00"))
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            return dt
-        except ValueError:
-            pass
+def fetch_episode_pub_date(pid):
+    """Fetch the exact uploadDate / datePublished from the individual BBC programme page."""
+    ep_url = f"https://www.bbc.co.uk/programmes/{pid}"
+    try:
+        resp = requests.get(ep_url, headers=HEADERS, timeout=10)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
 
-    # 2. Fallback: Parse visible BBC broadcast date text (e.g., "14 Nov 2026")
-    date_el = item.select_one(".broadcast-event__time, .programme__service, .date, time")
-    if date_el:
-        text = date_el.get_text(" ", strip=True)
-        match = re.search(r'(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})', text)
-        if match:
-            for fmt in ("%d %b %Y", "%d %B %Y"):
-                try:
-                    return datetime.strptime(match.group(1), fmt).replace(tzinfo=timezone.utc)
-                except ValueError:
-                    continue
+        # 1. Check JSON-LD schema metadata
+        for script in soup.find_all("script", type="application/ld+json"):
+            if not script.string:
+                continue
+            try:
+                data = json.loads(script.string)
+                items = data if isinstance(data, list) else [data]
+                for obj in items:
+                    date_str = obj.get("datePublished") or obj.get("uploadDate") or obj.get("startDate")
+                    if date_str:
+                        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+                        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+            except Exception:
+                continue
+
+        # 2. Fallback: Check meta tags or <time datetime="...">
+        meta_date = soup.select_one("meta[property='article:published_time'], meta[name='DCTERMS.created']")
+        if meta_date and meta_date.get("content"):
+            dt = datetime.fromisoformat(meta_date["content"].replace("Z", "+00:00"))
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+        time_el = soup.select_one("time[datetime]")
+        if time_el and time_el.get("datetime"):
+            dt = datetime.fromisoformat(time_el["datetime"].replace("Z", "+00:00"))
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+    except Exception as e:
+        print(f"Could not fetch date for {pid}: {e}")
 
     return None
 
 def scrape_bbc_sounds():
     print(f"Fetching {PROGRAMMES_URL}...")
+    cached_dates = load_cached_dates(FILENAME)
+
     response = requests.get(PROGRAMMES_URL, headers=HEADERS, timeout=15)
     response.raise_for_status()
-
     soup = BeautifulSoup(response.text, "html.parser")
 
     fg = FeedGenerator()
@@ -83,26 +112,30 @@ def scrape_bbc_sounds():
         synopsis_el = item.select_one(".programme__synopsis, p")
         synopsis = synopsis_el.get_text(" ", strip=True) if synopsis_el else ""
         image_url = extract_image_url(item)
-        pub_date = extract_pub_date(item)
+        sounds_link = f"https://www.bbc.co.uk/sounds/play/{pid}"
 
         seen_ids.add(pid)
         episodes.append({
             "id": pid,
             "title": title,
-            "link": f"https://www.bbc.co.uk/sounds/play/{pid}",
+            "link": sounds_link,
             "synopsis": synopsis,
-            "image": image_url,
-            "pub_date": pub_date
+            "image": image_url
         })
 
     for ep in episodes[:20]:
+        pub_date = cached_dates.get(ep["link"])
+        if not pub_date:
+            print(f"Fetching date for {ep['id']}...")
+            pub_date = fetch_episode_pub_date(ep["id"])
+
         fe = fg.add_entry()
         fe.id(ep["link"])
         fe.title(ep["title"])
         fe.link(href=ep["link"])
 
-        if ep["pub_date"]:
-            fe.pubDate(ep["pub_date"])
+        if pub_date:
+            fe.pubDate(pub_date)
 
         if ep["image"]:
             fe.enclosure(url=ep["image"], length="0", type="image/jpeg")
