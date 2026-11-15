@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Stockport County News - Sky Sports</title>
+    <link>https://www.skysports.com/stockport-county</link>
+    <description>Latest news and videos from Stockport County News - Sky Sports</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>python-feedgen</generator>
+    <lastBuildDate>Sun, 15 Nov 2026 05:37:44 +0000</lastBuildDate>
+    <item>
+      <title>Championship, L1 &amp; L2 26/27 season - key dates &amp; schedule</title>
+      <link>https://www.skysports.com/football/news/13547881/efl-26-27-season-start-date-fixture-release-final-day-live-sky-sports-games-and-match-schedule-for-championship-l1-l2</link>
+      <guid isPermaLink="false">https://www.skysports.com/football/news/13547881/efl-26-27-season-start-date-fixture-release-final-day-live-sky-sports-games-and-match-schedule-for-championship-l1-l2</guid>
+    </item>
+    <item>
+      <title>L1 fixtures: Leicester start at Notts County with every opening game live on Sky</title>
+      <link>https://www.skysports.com/football/news/13552244/league-one-2026-27-season-fixtures-dates-schedule-and-how-to-watch</link>
+      <guid isPermaLink="false">https://www.skysports.com/football/news/13552244/league-one-2026-27-season-fixtures-dates-schedule-and-how-to-watch</guid>
+    </item>
+    <item>
+      <title>British South Asians in Football</title>
+      <link>https://www.skysports.com/football/news/topic/9087/south-asians-in-football</link>
+      <guid isPermaLink="false">https://www.skysports.com/football/news/topic/9087/south-asians-in-football</guid>
+    </item>
+    <item>
+      <title>Sky Sports with no contract</title>
+      <link>https://www.skysports.com/football/news/11095/13078979/now-sports-membership-q-a-how-do-i-stream-sky-sports-is-it-instant-is-there-a-contract</link>
+      <guid isPermaLink="false">https://www.skysports.com/football/news/11095/13078979/now-sports-membership-q-a-how-do-i-stream-sky-sports-is-it-instant-is-there-a-contract</guid>
+    </item>
+  </channel>
+</rss>
