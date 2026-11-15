@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>BBC Sport - Stockport County</title>
+    <link>https://www.bbc.co.uk/sounds/brand/p0kfv035</link>
+    <description>Latest episodes from BBC Sport - Stockport County</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>python-feedgen</generator>
+    <lastBuildDate>Sun, 15 Nov 2026 05:43:44 +0000</lastBuildDate>
+    <item>
+      <title>McNulty: 'Very diligent performance'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0phq8g4</link>
+      <description>Jimmy McNulty is pleased with his side's assured performance in 2-0 win at Doncaster.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0phq8g4</guid>
+    </item>
+    <item>
+      <title>McNulty: 'We are constant'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pj1m3b</link>
+      <description>Jimmy McNulty on Doncaster win, mean defence, Andy Woodman's sacking and Notts County.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pj1m3b</guid>
+    </item>
+    <item>
+      <title>McNulty: 'We really did dominate the game'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pjggyn</link>
+      <description>Stockport boss Jimmy McNulty gives his verdict on the 1-1 draw with Notts County.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pjggyn</guid>
+    </item>
+    <item>
+      <title>McNulty: "That's not the players fault, thats on me"</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pjyks7</link>
+      <description>Jimmy McNulty after losing 1-0 at Oxford to end an unbeaten run of 7 games.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pjyks7</guid>
+    </item>
+    <item>
+      <title>McNulty: 'It's a huge win'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pknkpg</link>
+      <description>Jimmy McNulty and matchwinner Ethan Ennis after County's 2-1 win against Wimbledon.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pknkpg</guid>
+    </item>
+    <item>
+      <title>McNulty: 'It changed my life'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pl2d8p</link>
+      <description>Jimmy McNulty on being named Manager of the Season at the North West Football Awards.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pl2d8p</guid>
+    </item>
+    <item>
+      <title>Hinchliffe: ‘I’ve had an amazing career’</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pl34dj</link>
+      <description>Ex-Stockport goalkeeper Ben Hinchliffe on being named PFA League One Community Champion.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pl34dj</guid>
+    </item>
+    <item>
+      <title>McNulty: 'I had a high belief'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0plygsl</link>
+      <description>Jimmy McNulty and Mikael Mandron after beating Cray Wanderers 3-2 in the FA Cup.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0plygsl</guid>
+    </item>
+    <item>
+      <title>McNulty: 'He was the guy who led it'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pmvd7h</link>
+      <description>Stockport boss Jimmy McNulty on Ollie Whatmuff staying with County for the Reading game.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pmvd7h</guid>
+    </item>
+    <item>
+      <title>McNulty: 'The performance was pleasing'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pn28y6</link>
+      <description>Stockport boss Jimmy McNutly after their 3-1 win over Reading.</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pn28y6</guid>
+    </item>
+  </channel>
+</rss>
