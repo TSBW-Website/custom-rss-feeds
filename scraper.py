@@ -37,11 +37,25 @@ def extract_image_url(item):
     img_el = item.select_one("img")
     if not img_el:
         return ""
-    img_url = img_el.get("data-src") or img_el.get("src") or ""
-    if "{recipe}" in img_url:
-        img_url = img_url.replace("{recipe}", "640x360")
-    if img_url.startswith("data:image"):
+    
+    # Check srcset first for the highest resolution variant, otherwise fall back to data-src/src
+    img_url = ""
+    srcset = img_el.get("srcset") or img_el.get("data-srcset") or ""
+    if srcset:
+        candidates = [s.strip().split(" ")[0] for s in srcset.split(",") if s.strip()]
+        if candidates:
+            img_url = candidates[-1]
+            
+    if not img_url:
+        img_url = img_el.get("data-src") or img_el.get("src") or ""
+
+    if img_url.startswith("data:image") or not img_url:
         return ""
+
+    # Upgrade BBC ichef thumbnail dimensions (e.g., /320x180/ or /{recipe}/) to 1280x720 HD
+    img_url = img_url.replace("{recipe}", "1280x720")
+    img_url = re.sub(r'/ic/\d+x\d+/', '/ic/1280x720/', img_url)
+
     return img_url
 
 def fetch_episode_pub_date(pid):
@@ -52,7 +66,6 @@ def fetch_episode_pub_date(pid):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 
-        # 1. Check JSON-LD schema metadata
         for script in soup.find_all("script", type="application/ld+json"):
             if not script.string:
                 continue
@@ -67,7 +80,6 @@ def fetch_episode_pub_date(pid):
             except Exception:
                 continue
 
-        # 2. Fallback: Check meta tags or <time datetime="...">
         meta_date = soup.select_one("meta[property='article:published_time'], meta[name='DCTERMS.created']")
         if meta_date and meta_date.get("content"):
             dt = datetime.fromisoformat(meta_date["content"].replace("Z", "+00:00"))
