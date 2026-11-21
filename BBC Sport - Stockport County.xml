@@ -6,15 +6,7 @@
     <description>Latest episodes from BBC Sport - Stockport County</description>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>python-feedgen</generator>
-    <lastBuildDate>Sat, 21 Nov 2026 18:32:09 +0000</lastBuildDate>
-    <item>
-      <title>McNulty: 'We really did dominate the game'</title>
-      <link>https://www.bbc.co.uk/sounds/play/p0pjggyn</link>
-      <description>&lt;p&gt;&lt;img src="https://ichef.bbci.co.uk/images/ic/1280x720/p0pjggzh.jpg" alt="McNulty: 'We really did dominate the game'" /&gt;&lt;/p&gt;&lt;p&gt;Stockport boss Jimmy McNulty gives his verdict on the 1-1 draw with Notts County.&lt;/p&gt;</description>
-      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pjggyn</guid>
-      <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pjggzh.jpg" length="0" type="image/jpeg"/>
-      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
-    </item>
+    <lastBuildDate>Sat, 21 Nov 2026 20:31:22 +0000</lastBuildDate>
     <item>
       <title>McNulty: "That's not the players fault, thats on me"</title>
       <link>https://www.bbc.co.uk/sounds/play/p0pjyks7</link>
@@ -86,6 +78,14 @@
       <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pnvw1m</guid>
       <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pnvw2d.jpg" length="0" type="image/jpeg"/>
       <pubDate>Thu, 19 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>McNulty: 'We got what we deserved'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pp8pdf</link>
+      <description>&lt;p&gt;&lt;img src="https://ichef.bbci.co.uk/images/ic/1280x720/p0pp8pdt.jpg" alt="McNulty: 'We got what we deserved'" /&gt;&lt;/p&gt;&lt;p&gt;A delighted Jimmy McNulty after Stockport's 3-0 win at Cambridge.&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pp8pdf</guid>
+      <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pp8pdt.jpg" length="0" type="image/jpeg"/>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>
