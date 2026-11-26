@@ -6,15 +6,7 @@
     <description>Latest episodes from BBC Sport - Stockport County</description>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>python-feedgen</generator>
-    <lastBuildDate>Thu, 26 Nov 2026 16:57:57 +0000</lastBuildDate>
-    <item>
-      <title>McNulty: "That's not the players fault, thats on me"</title>
-      <link>https://www.bbc.co.uk/sounds/play/p0pjyks7</link>
-      <description>&lt;p&gt;&lt;img src="https://ichef.bbci.co.uk/images/ic/1280x720/p0pjyksf.jpg" alt="McNulty: "That's not the players fault, thats on me"" /&gt;&lt;/p&gt;&lt;p&gt;Jimmy McNulty after losing 1-0 at Oxford to end an unbeaten run of 7 games.&lt;/p&gt;</description>
-      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pjyks7</guid>
-      <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pjyksf.jpg" length="0" type="image/jpeg"/>
-      <pubDate>Tue, 27 Oct 2026 00:00:00 +0000</pubDate>
-    </item>
+    <lastBuildDate>Thu, 26 Nov 2026 18:46:19 +0000</lastBuildDate>
     <item>
       <title>McNulty: 'It's a huge win'</title>
       <link>https://www.bbc.co.uk/sounds/play/p0pknkpg</link>
@@ -86,6 +78,14 @@
       <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pp8pdf</guid>
       <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pp8pdt.jpg" length="0" type="image/jpeg"/>
       <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>McNulty: 'Ennis brings X Factor'</title>
+      <link>https://www.bbc.co.uk/sounds/play/p0pq3l3w</link>
+      <description>&lt;p&gt;&lt;img src="https://ichef.bbci.co.uk/images/ic/1280x720/p0pq3ldb.jpg" alt="McNulty: 'Ennis brings X Factor'" /&gt;&lt;/p&gt;&lt;p&gt;County boss Jimmy McNulty chats Ethan Ennis, Ollie Norwood and dealing with scrutiny.&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://www.bbc.co.uk/sounds/play/p0pq3l3w</guid>
+      <enclosure url="https://ichef.bbci.co.uk/images/ic/1280x720/p0pq3ldb.jpg" length="0" type="image/jpeg"/>
+      <pubDate>Thu, 26 Nov 2026 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>
